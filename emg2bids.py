@@ -125,6 +125,8 @@ def infotodict(
 
         # Field maps
         elif "spinechofieldmap" in protocol_name:
+            if "spinechofieldmap2" in protocol_name:
+                continue
             _, dir = protocol_name.split("_")
             dir = dir.upper()
 
