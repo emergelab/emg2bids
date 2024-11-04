@@ -80,7 +80,7 @@ def infotodict(
         """
 
         protocol_name = s.protocol_name.lower()
-        dcm_dir_name = s.dcm_dir_name.lower()
+        series_description = s.series_description.lower()
 
         # Structural scans
         if "t1w_mpr" in protocol_name:
@@ -102,7 +102,7 @@ def infotodict(
             ]  # Remove the numbering for tasks (e.g. rest1, rest2 -> rest)
             dir = dir.upper()  # Make dir uppercase
 
-            if "sbref" in dcm_dir_name:
+            if "sbref" in series_description:
                 key = func_sbref
             else:
                 key = func
@@ -116,7 +116,7 @@ def infotodict(
             _, acq, dir = protocol_name.split("_")
             dir = dir.upper()
 
-            if "sbref" in dcm_dir_name:
+            if "sbref" in series_description:
                 key = dwi_sbref
             else:
                 key = dwi
