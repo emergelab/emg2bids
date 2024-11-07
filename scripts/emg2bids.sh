@@ -14,23 +14,22 @@ HEUDICONV_OPTS="-g all -c dcm2niix --bids --overwrite -o ${OUTPUT_DIR} -f ${HEUR
 
 mkdir -p $LOG_DIR
 
-N=4
-
-task(){
-    scan_dir="$1"
-
-    if [[ $scan_dir =~ "exclude" ]]; then # check if dir has exclude tag
-        return
-    fi
-
-    subject="${scan_dir##*/}"
-    cmd="heudiconv $HEUDICONV_OPTS -s ${subject} --files ${scan_dir}/dicom/raw.sc/*"
-    $cmd >> "${LOG_DIR}/${subject}.txt"
-}
-
 for scan_dir in $INPUT_DIR/*;
 do
-    # ((i=i%N)); ((i++==0)) && wait
-    # task $scan_dir &
-    task $scan_dir
+    subject="${scan_dir##*/}"
+    
+    # check if dir has exclude tag
+    if [[ $scan_dir =~ "exclude" ]]; then 
+        continue
+    fi
+
+    # check if output subject already exists; if yes, then skip
+    if [[ -d "${OUTPUT_DIR}/${subject}" ]]; then
+        echo "${subject} Exists"
+    fi
+
+    
+    cmd="heudiconv $HEUDICONV_OPTS -s ${subject} --files ${scan_dir}/dicom/raw.sc/*"
+    $cmd >> "${LOG_DIR}/${subject}.txt"
+
 done
