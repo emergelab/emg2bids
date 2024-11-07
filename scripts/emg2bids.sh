@@ -21,15 +21,12 @@ do
     # check if dir has exclude tag
     if [[ $scan_dir =~ "exclude" ]]; then 
         continue
-    fi
-
     # check if output subject already exists; if yes, then skip
-    if [[ -d "${OUTPUT_DIR}/${subject}" ]]; then
-        echo "${subject} Exists"
+    elif [[ -d "${OUTPUT_DIR}/sub-${subject}" ]]; then
+        continue
+    else
+        cmd="heudiconv $HEUDICONV_OPTS -s ${subject} --files ${scan_dir}/dicom/raw.sc/*"
+        $cmd >> "${LOG_DIR}/${subject}.txt"
     fi
-
-    
-    cmd="heudiconv $HEUDICONV_OPTS -s ${subject} --files ${scan_dir}/dicom/raw.sc/*"
-    $cmd >> "${LOG_DIR}/${subject}.txt"
 
 done
