@@ -7,6 +7,10 @@ from heudiconv.utils import SeqInfo
 
 lgr = logging.getLogger("heudiconv")
 
+POPULATE_INTENDED_FOR_OPTS = {
+    "matching_parameters": ["ImagingVolume", "Shims"],
+    "criterion": "Closest",
+}
 
 def create_key(
     template: Optional[str],
