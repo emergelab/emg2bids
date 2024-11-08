@@ -17,16 +17,17 @@ mkdir -p $LOG_DIR
 for scan_dir in $INPUT_DIR/*;
 do
     subject="${scan_dir##*/}"
-    
+
     # check if dir has exclude tag
-    if [[ $scan_dir =~ "exclude" ]]; then 
+    if [[ $scan_dir =~ "exclude" ]]; then
         continue
     # check if output subject already exists; if yes, then skip
     elif [[ -d "${OUTPUT_DIR}/sub-${subject}" ]]; then
         continue
     else
         cmd="heudiconv $HEUDICONV_OPTS -s ${subject} --files ${scan_dir}/dicom/raw.sc/*"
-        $cmd >> "${LOG_DIR}/${subject}.txt"
+        echo "Running ${subject}"
+        $cmd 2>&1 | tee "${LOG_DIR}/${subject}.txt"
     fi
 
 done
